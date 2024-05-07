@@ -50,6 +50,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 import entity.KhachHang;
+import entity.Login;
 import entity.NhanVien;
 
 public class GiaoDienChinh_GUI extends javax.swing.JFrame {
@@ -62,8 +63,9 @@ public class GiaoDienChinh_GUI extends javax.swing.JFrame {
     private GridBagConstraints gbc;
     private JButton giam;
     private JTextField textField_SL;
+    private NhanVien authenticatedEmployee;
 
-    public GiaoDienChinh_GUI(java.util.HashMap<java.lang.String, java.lang.Object> productInfoMap) throws SQLException {
+    public GiaoDienChinh_GUI(HashMap<String, Object> productInfoMap, Login authenticatedUser) throws SQLException {
         // tạo kết nối
         ConnectionDB.getInstance().connect();
         initComponents();
@@ -80,6 +82,12 @@ public class GiaoDienChinh_GUI extends javax.swing.JFrame {
         setResizable(false);
         khachHang_DAO = new KhachHang_DAO(); // Khởi tạo đối tượng KhachHang_DAO
         updateTableKhachHang();
+        
+        NhanVien_DAO nvDAO = new NhanVien_DAO();
+        NhanVien nv =  nvDAO.getUserByUserPassword(authenticatedUser.getUsername(), authenticatedUser.getPassword());
+        txtMaNV.setText(nv.getMaNhanVien());
+        txtHoTenNV.setText(nv.getHoTen());
+        txtChucVu.setText(nv.getChucVu());    
     }
 
     private void addEventListenersChinh() {
@@ -172,9 +180,10 @@ public class GiaoDienChinh_GUI extends javax.swing.JFrame {
         jLabel26 = new javax.swing.JLabel();
         jLabel27 = new javax.swing.JLabel();
         jLabel28 = new javax.swing.JLabel();
-        jLabel29 = new javax.swing.JLabel();
-        jLabel30 = new javax.swing.JLabel();
-        lblNhanVien = new javax.swing.JLabel();
+        jLabel37 = new javax.swing.JLabel();
+        txtChucVu = new javax.swing.JTextField();
+        txtMaNV = new javax.swing.JTextField();
+        txtHoTenNV = new javax.swing.JTextField();
         pnContainer = new javax.swing.JPanel();
         Home = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
@@ -518,22 +527,33 @@ public class GiaoDienChinh_GUI extends javax.swing.JFrame {
 
         jLabel27.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel27.setText("Chức vụ:");
-        sidepane.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 560, -1, -1));
+        sidepane.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 600, -1, -1));
 
         jLabel28.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel28.setText("Họ tên:");
-        sidepane.add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 520, -1, -1));
+        sidepane.add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 560, -1, -1));
 
-        jLabel29.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel29.setText("Quản lý");
-        sidepane.add(jLabel29, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 560, -1, -1));
+        jLabel37.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel37.setText("Mã NV:");
+        sidepane.add(jLabel37, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 520, -1, -1));
 
-        jLabel30.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel30.setText("Nguyễn Văn A");
-        sidepane.add(jLabel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 520, -1, -1));
+        txtChucVu.setEditable(false);
+        txtChucVu.setBackground(new java.awt.Color(207, 255, 255));
+        txtChucVu.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtChucVu.setBorder(null);
+        sidepane.add(txtChucVu, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 600, 190, 30));
 
-        lblNhanVien.setText("NV001");
-        sidepane.add(lblNhanVien, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 480, 50, 30));
+        txtMaNV.setEditable(false);
+        txtMaNV.setBackground(new java.awt.Color(207, 255, 255));
+        txtMaNV.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtMaNV.setBorder(null);
+        sidepane.add(txtMaNV, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 520, 190, 30));
+
+        txtHoTenNV.setEditable(false);
+        txtHoTenNV.setBackground(new java.awt.Color(207, 255, 255));
+        txtHoTenNV.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtHoTenNV.setBorder(null);
+        sidepane.add(txtHoTenNV, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 560, 190, 30));
 
         pnContainer.setLayout(new java.awt.CardLayout());
 
@@ -837,7 +857,7 @@ public class GiaoDienChinh_GUI extends javax.swing.JFrame {
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
             .addGroup(HomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(HomeLayout.createSequentialGroup()
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 688, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 688, Short.MAX_VALUE)
                     .addContainerGap()))
         );
 
@@ -1723,7 +1743,7 @@ public class GiaoDienChinh_GUI extends javax.swing.JFrame {
                 .addGap(0, 7, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addComponent(pnContainer, javax.swing.GroupLayout.DEFAULT_SIZE, 688, Short.MAX_VALUE)
+                    .addComponent(pnContainer, javax.swing.GroupLayout.PREFERRED_SIZE, 688, Short.MAX_VALUE)
                     .addContainerGap()))
         );
 
@@ -2467,7 +2487,7 @@ public class GiaoDienChinh_GUI extends javax.swing.JFrame {
                 thanhToanBill.setTextAreaContent(billDetails); // Đưa thông tin vào JTextArea
                 thanhToanBill.setLastBillDetails(billDetails);
                 thanhToanBill.setTongTien(tongTien);
-                thanhToanBill.setHoTen(lblNhanVien.getText());
+                thanhToanBill.setHoTen(txtHoTen.getText());
                 thanhToanBill.setVisible(true);
 
                 // Đóng cửa sổ trang chủ (nếu cần)
@@ -2837,49 +2857,53 @@ public class GiaoDienChinh_GUI extends javax.swing.JFrame {
 
     }
 
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GiaoDienChinh_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GiaoDienChinh_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GiaoDienChinh_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GiaoDienChinh_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    new GiaoDienChinh_GUI(null).setVisible(true);
-                } catch (SQLException ex) {
-                    Logger.getLogger(GiaoDienChinh_GUI.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-            }
-        });
-//        NhanVien_DAO nv = new NhanVien_DAO();
-//        NhanVien user = (NhanVien) nv.getUserByUserPassword("admin","admin");
-//        System.out.println(user.getHoTen());
-//        System.out.println(user.getChucVu());
-    }
+//    public static void main(String args[]) {
+//        /* Set the Nimbus look and feel */
+//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+//         */
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(GiaoDienChinh_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(GiaoDienChinh_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(GiaoDienChinh_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(GiaoDienChinh_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
+//        //</editor-fold>
+//        //</editor-fold>
+//        //</editor-fold>
+//        //</editor-fold>
+//        //</editor-fold>
+//        //</editor-fold>
+//        //</editor-fold>
+//        //</editor-fold>
+//
+//        /* Create and display the form */
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                try {
+//                    new GiaoDienChinh_GUI(null).setVisible(true);
+//                } catch (SQLException ex) {
+//                    Logger.getLogger(GiaoDienChinh_GUI.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//
+//            }
+//        });
+////        NhanVien_DAO nv = new NhanVien_DAO();
+////        NhanVien user = (NhanVien) nv.getUserByUserPassword("admin","admin");
+////        System.out.println(user.getHoTen());
+////        System.out.println(user.getChucVu());
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel CaiDat;
@@ -2952,15 +2976,14 @@ public class GiaoDienChinh_GUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
-    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel36;
+    private javax.swing.JLabel jLabel37;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -2992,19 +3015,21 @@ public class GiaoDienChinh_GUI extends javax.swing.JFrame {
     private javax.swing.JTable jTable3;
     private javax.swing.JTextField jTextField1;
     private java.awt.Label label1;
-    private javax.swing.JLabel lblNhanVien;
     private javax.swing.JTextField lblThanhTien;
     private javax.swing.JPanel panelThanhToan;
     private javax.swing.JPanel pnContainer;
     private javax.swing.JPanel pnNuocCoGa;
     private javax.swing.JPanel sidepane;
     private javax.swing.JTable tableKhachHang;
+    private javax.swing.JTextField txtChucVu;
     private javax.swing.JTextField txtDanhMuc;
     private javax.swing.JTextField txtDiemTV;
     private javax.swing.JTextField txtGiaTien;
     private javax.swing.JTextField txtHoTen;
+    private javax.swing.JTextField txtHoTenNV;
     private javax.swing.JTextField txtMaKH;
     private javax.swing.JTextField txtMaLoai;
+    private javax.swing.JTextField txtMaNV;
     private javax.swing.JTextField txtMaSP;
     private javax.swing.JTextField txtMaSize;
     private javax.swing.JTextField txtMoTa;
@@ -3126,4 +3151,8 @@ public class GiaoDienChinh_GUI extends javax.swing.JFrame {
             model.addRow(new Object[]{customer.getMaKhachHang(), customer.getHoTen(), customer.getDiemThanhVien()});
         }
     }
+
+
+
+
 }

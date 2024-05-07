@@ -5,6 +5,7 @@
 package gui;
 
 import dao.Login_DAO;
+import entity.Login;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -182,83 +183,59 @@ public class Login_GUI extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
-    }
-// Phương thức kiểm tra thông tin đăng nhập có hợp lệ không
-// Phương thức mở trang chủ
-
-    public void openHomePage() {
-        // Đóng cửa sổ đăng nhập
-        dispose();
-        // Mở trang chủ
-        System.out.println("Login thành công");
-
-        GiaoDienChinh_GUI p = null;
-        try {
-            p = new GiaoDienChinh_GUI(productInfoMap);
-        } catch (SQLException ex) {
-            Logger.getLogger(Login_GUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        p.setVisible(true);
-
     }//GEN-LAST:event_jButton1ActionPerformed
     String username;
     String password;
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
-        // Lấy giá trị từ các trường văn bản
         username = txtUser.getText();
         password = new String(txtPassword.getPassword());
 
-        // Kiểm tra xem thông tin đăng nhập có hợp lệ không
-        if (isValidCredentials(username, password)) {
-            // Mở trang chủ nếu thông tin đúng
+        Login login = new Login(username, password);
+        Login_DAO loginDAO = new Login_DAO();
+        Login authenticatedUser = loginDAO.authenticateUser(login);
 
-            openHomePage();
+        if (authenticatedUser != null) {
+            openHomePage(authenticatedUser); // Thêm thông tin đăng nhập vào phương thức openHomePage
         } else {
-            // Hiển thị thông báo lỗi nếu thông tin đăng nhập không đúng
             JOptionPane.showMessageDialog(null, "Tên đăng nhập hoặc mật khẩu không đúng!");
         }
     }//GEN-LAST:event_jButton1MouseClicked
-    public boolean isValidCredentials(String username, String password) {
-        // Sử dụng Login_DAO để kiểm tra thông tin đăng nhập
-        dao.Login_DAO loginDAO = new Login_DAO();
-        return loginDAO.authenticateUser(username, password);
-    }
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Login_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Login_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Login_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Login_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> {
-            new Login_GUI().setVisible(true);
-        });
-    }
+//    public static void main(String args[]) {
+//        /* Set the Nimbus look and feel */
+//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+//         */
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(Login_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(Login_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(Login_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(Login_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
+//        //</editor-fold>
+//        //</editor-fold>
+//        //</editor-fold>
+//        //</editor-fold>
+//
+//        /* Create and display the form */
+//        java.awt.EventQueue.invokeLater(() -> {
+//            new Login_GUI().setVisible(true);
+//        });
+//    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -273,4 +250,18 @@ public class Login_GUI extends javax.swing.JFrame {
     private javax.swing.JPasswordField txtPassword;
     private javax.swing.JTextField txtUser;
     // End of variables declaration//GEN-END:variables
+
+    private void openHomePage(Login authenticatedUser) {
+        dispose();
+        System.out.println("Login thành công");
+
+        // Khởi tạo GiaoDienChinh_GUI với thông tin đăng nhập
+        GiaoDienChinh_GUI p = null;
+        try {
+            p = new GiaoDienChinh_GUI(productInfoMap,authenticatedUser); // Truyền thông tin người dùng vào constructor
+        } catch (SQLException ex) {
+            Logger.getLogger(Login_GUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        p.setVisible(true);
+    }
 }

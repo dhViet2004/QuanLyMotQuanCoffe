@@ -8,7 +8,10 @@ public class NhanVien {
     private String email;
     private String soDienThoai;
 
-    // Constructor
+    // Constructors
+    public NhanVien() {
+    }
+
     public NhanVien(String maNhanVien, String hoTen, String chucVu, String boPhan, String email, String soDienThoai) {
         this.maNhanVien = maNhanVien;
         this.hoTen = hoTen;
@@ -16,10 +19,6 @@ public class NhanVien {
         this.boPhan = boPhan;
         this.email = email;
         this.soDienThoai = soDienThoai;
-    }
-
-    public NhanVien(String string, String string0) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     // Getters and setters
@@ -71,7 +70,7 @@ public class NhanVien {
         this.soDienThoai = soDienThoai;
     }
 
-    // Override toString method
+    // toString method
     @Override
     public String toString() {
         return "NhanVien{" +
