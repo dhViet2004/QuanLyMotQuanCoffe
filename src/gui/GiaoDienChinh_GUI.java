@@ -52,6 +52,15 @@ import javax.swing.table.DefaultTableModel;
 import entity.KhachHang;
 import entity.Login;
 import entity.NhanVien;
+import java.awt.Desktop;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import javax.swing.JFileChooser;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class GiaoDienChinh_GUI extends javax.swing.JFrame {
 
@@ -257,6 +266,7 @@ public class GiaoDienChinh_GUI extends javax.swing.JFrame {
         btnSua = new javax.swing.JButton();
         btnXoaSP = new javax.swing.JButton();
         btnXoaRong = new javax.swing.JButton();
+        btnXuatFile = new javax.swing.JButton();
         ThongKe = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
         jLabel31 = new javax.swing.JLabel();
@@ -857,7 +867,7 @@ public class GiaoDienChinh_GUI extends javax.swing.JFrame {
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
             .addGroup(HomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(HomeLayout.createSequentialGroup()
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 688, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 688, Short.MAX_VALUE)
                     .addContainerGap()))
         );
 
@@ -1331,6 +1341,15 @@ public class GiaoDienChinh_GUI extends javax.swing.JFrame {
             }
         });
 
+        btnXuatFile.setBackground(new java.awt.Color(102, 255, 102));
+        btnXuatFile.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        btnXuatFile.setText("Xuất File");
+        btnXuatFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXuatFileActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
@@ -1338,13 +1357,15 @@ public class GiaoDienChinh_GUI extends javax.swing.JFrame {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(99, 99, 99)
                 .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 173, Short.MAX_VALUE)
+                .addGap(110, 110, 110)
                 .addComponent(btnSua, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(142, 142, 142)
+                .addGap(118, 118, 118)
                 .addComponent(btnXoaRong)
-                .addGap(157, 157, 157)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 120, Short.MAX_VALUE)
                 .addComponent(btnXoaSP, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(161, 161, 161))
+                .addGap(97, 97, 97)
+                .addComponent(btnXuatFile)
+                .addGap(59, 59, 59))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1353,8 +1374,9 @@ public class GiaoDienChinh_GUI extends javax.swing.JFrame {
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSua, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnXoaSP, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnXoaRong, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnXoaRong, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnXuatFile, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnXoaSP, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(33, 33, 33))
         );
 
@@ -1743,7 +1765,7 @@ public class GiaoDienChinh_GUI extends javax.swing.JFrame {
                 .addGap(0, 7, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addComponent(pnContainer, javax.swing.GroupLayout.PREFERRED_SIZE, 688, Short.MAX_VALUE)
+                    .addComponent(pnContainer, javax.swing.GroupLayout.DEFAULT_SIZE, 688, Short.MAX_VALUE)
                     .addContainerGap()))
         );
 
@@ -2673,6 +2695,47 @@ public class GiaoDienChinh_GUI extends javax.swing.JFrame {
             ex.printStackTrace();
         }
     }//GEN-LAST:event_jButton23ActionPerformed
+
+    private void btnXuatFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXuatFileActionPerformed
+              try{
+           JFileChooser jFileChooser = new JFileChooser();
+           jFileChooser.showSaveDialog(this);
+           File saveFile = jFileChooser.getSelectedFile();
+           
+           if(saveFile != null){
+               saveFile = new File(saveFile.toString()+".xlsx");
+               Workbook wb = new XSSFWorkbook();
+               Sheet sheet = wb.createSheet("customer");
+               
+               Row rowCol = sheet.createRow(0);
+               for(int i=0;i<jTable1.getColumnCount();i++){
+                   Cell cell = rowCol.createCell(i);
+                   cell.setCellValue(jTable1.getColumnName(i));
+               }
+               
+               for(int j=0;j<jTable1.getRowCount();j++){
+                   Row row = sheet.createRow(j+1);
+                   for(int k=0;k<jTable1.getColumnCount();k++){
+                       Cell cell = row.createCell(k);
+                       if(jTable1.getValueAt(j, k)!=null){
+                           cell.setCellValue(jTable1.getValueAt(j, k).toString());
+                       }
+                   }
+               }
+               FileOutputStream out = new FileOutputStream(new File(saveFile.toString()));
+               wb.write(out);
+               wb.close();
+               out.close();
+               openFile(saveFile.toString());
+           }else{
+               JOptionPane.showMessageDialog(null,"Error al generar archivo");
+           }
+       }catch(FileNotFoundException e){
+           System.out.println(e);
+       }catch(IOException io){
+           System.out.println(io);
+       }
+    }//GEN-LAST:event_btnXuatFileActionPerformed
     private Map<String, Integer> productQuantityMap = new HashMap<>();
 
     private void updateTable2() {
@@ -2929,6 +2992,7 @@ public class GiaoDienChinh_GUI extends javax.swing.JFrame {
     private javax.swing.JPanel btnTrangChu;
     private javax.swing.JButton btnXoaRong;
     private javax.swing.JButton btnXoaSP;
+    private javax.swing.JButton btnXuatFile;
     private javax.swing.JButton btn_ThanhToan;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
@@ -3151,6 +3215,15 @@ public class GiaoDienChinh_GUI extends javax.swing.JFrame {
             model.addRow(new Object[]{customer.getMaKhachHang(), customer.getHoTen(), customer.getDiemThanhVien()});
         }
     }
+
+    private void openFile(String file) {
+    try {
+        var path = new File(file);
+        Desktop.getDesktop().open(path);
+    } catch (IOException ioe) {
+        System.out.println(ioe);
+    }
+}
 
 
 
