@@ -258,7 +258,7 @@ public class Login_GUI extends javax.swing.JFrame {
         // Khởi tạo GiaoDienChinh_GUI với thông tin đăng nhập
         GiaoDienChinh_GUI p = null;
         try {
-            p = new GiaoDienChinh_GUI(productInfoMap,authenticatedUser); // Truyền thông tin người dùng vào constructor
+            p = new GiaoDienChinh_GUI(productInfoMap); // Truyền thông tin người dùng vào constructor
         } catch (SQLException ex) {
             Logger.getLogger(Login_GUI.class.getName()).log(Level.SEVERE, null, ex);
         }

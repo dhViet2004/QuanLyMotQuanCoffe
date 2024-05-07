@@ -64,8 +64,8 @@ public class GiaoDienChinh_GUI extends javax.swing.JFrame {
     private JButton giam;
     private JTextField textField_SL;
     private NhanVien authenticatedEmployee;
-
-    public GiaoDienChinh_GUI(HashMap<String, Object> productInfoMap, Login authenticatedUser) throws SQLException {
+    private Login authenticatedUser;
+    public GiaoDienChinh_GUI(HashMap<String, Object> productInfoMap) throws SQLException {
         // tạo kết nối
         ConnectionDB.getInstance().connect();
         initComponents();
@@ -83,11 +83,11 @@ public class GiaoDienChinh_GUI extends javax.swing.JFrame {
         khachHang_DAO = new KhachHang_DAO(); // Khởi tạo đối tượng KhachHang_DAO
         updateTableKhachHang();
         
-        NhanVien_DAO nvDAO = new NhanVien_DAO();
-        NhanVien nv =  nvDAO.getUserByUserPassword(authenticatedUser.getUsername(), authenticatedUser.getPassword());
-        txtMaNV.setText(nv.getMaNhanVien());
-        txtHoTenNV.setText(nv.getHoTen());
-        txtChucVu.setText(nv.getChucVu());    
+//        NhanVien_DAO nvDAO = new NhanVien_DAO();
+//        NhanVien nv =  nvDAO.getUserByUserPassword(authenticatedUser.getUsername(), authenticatedUser.getPassword());
+//        txtMaNV.setText(nv.getMaNhanVien());
+//        txtHoTenNV.setText(nv.getHoTen());
+//        txtChucVu.setText(nv.getChucVu());    
     }
 
     private void addEventListenersChinh() {
@@ -2857,53 +2857,53 @@ public class GiaoDienChinh_GUI extends javax.swing.JFrame {
 
     }
 
-//    public static void main(String args[]) {
-//        /* Set the Nimbus look and feel */
-//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-//         */
-//        try {
-//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-//                if ("Nimbus".equals(info.getName())) {
-//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-//                    break;
-//                }
-//            }
-//        } catch (ClassNotFoundException ex) {
-//            java.util.logging.Logger.getLogger(GiaoDienChinh_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (InstantiationException ex) {
-//            java.util.logging.Logger.getLogger(GiaoDienChinh_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (IllegalAccessException ex) {
-//            java.util.logging.Logger.getLogger(GiaoDienChinh_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-//            java.util.logging.Logger.getLogger(GiaoDienChinh_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        }
-//        //</editor-fold>
-//        //</editor-fold>
-//        //</editor-fold>
-//        //</editor-fold>
-//        //</editor-fold>
-//        //</editor-fold>
-//        //</editor-fold>
-//        //</editor-fold>
-//
-//        /* Create and display the form */
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            public void run() {
-//                try {
-//                    new GiaoDienChinh_GUI(null).setVisible(true);
-//                } catch (SQLException ex) {
-//                    Logger.getLogger(GiaoDienChinh_GUI.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//
-//            }
-//        });
-////        NhanVien_DAO nv = new NhanVien_DAO();
-////        NhanVien user = (NhanVien) nv.getUserByUserPassword("admin","admin");
-////        System.out.println(user.getHoTen());
-////        System.out.println(user.getChucVu());
-//    }
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(GiaoDienChinh_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(GiaoDienChinh_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(GiaoDienChinh_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(GiaoDienChinh_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    new GiaoDienChinh_GUI(null).setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(GiaoDienChinh_GUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+        });
+//        NhanVien_DAO nv = new NhanVien_DAO();
+//        NhanVien user = (NhanVien) nv.getUserByUserPassword("admin","admin");
+//        System.out.println(user.getHoTen());
+//        System.out.println(user.getChucVu());
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel CaiDat;
