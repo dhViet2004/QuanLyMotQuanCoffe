@@ -80,6 +80,7 @@ public class GiaoDienChinh_GUI extends javax.swing.JFrame {
     private JTextField textField_SL;
     private NhanVien authenticatedEmployee;
     private Login authenticatedUser;
+    private String maNhanVien;
     public GiaoDienChinh_GUI(NhanVien userMaNv) throws SQLException {
         
         // tạo kết nối
@@ -101,8 +102,11 @@ public class GiaoDienChinh_GUI extends javax.swing.JFrame {
         txtMaNV.setText(userMaNv.getMaNhanVien());
         txtHoTenNV.setText(userMaNv.getHoTen());
         txtChucVu.setText(userMaNv.getChucVu());
+        
+        this.maNhanVien = userMaNv.getMaNhanVien();
     }
 
+    
     private void addEventListenersChinh() {
         // Thêm sự kiện cho button Thống kê
         btnThongKe.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -478,6 +482,11 @@ public class GiaoDienChinh_GUI extends javax.swing.JFrame {
 
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/caiDac.png"))); // NOI18N
+        jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel7MouseClicked(evt);
+            }
+        });
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel8.setText("Cài đặt");
@@ -2665,19 +2674,21 @@ public class GiaoDienChinh_GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnQuanLyMouseExited
 
     private void btn_ThanhToanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_ThanhToanMouseClicked
-        btn_ThanhToan.addActionListener(new ActionListener() {
+       btn_ThanhToan.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Lấy thông tin sản phẩm từ map và đưa vào JTextArea trong ThanhToanBill
                 String billDetails = getProductDetails();
                 String tongTien = calculateTotal();
                 // Chuyển sang trang thanh toán và hiển thị thông tin trên JTextArea
-                ThanhToanHoaDon_GUI thanhToanBill = new ThanhToanHoaDon_GUI();
+                ThanhToanBill thanhToanBill = new ThanhToanBill();
                 thanhToanBill.setTongTien(tongTien);
                 thanhToanBill.setTextAreaContent(billDetails); // Đưa thông tin vào JTextArea
                 thanhToanBill.setLastBillDetails(billDetails);
                 thanhToanBill.setTongTien(tongTien);
-                thanhToanBill.setHoTen(txtHoTen.getText());
+                thanhToanBill.setHoTen(maNhanVien);
+                thanhToanBill.getProductInfoMap(getProductInfoMap());
+                thanhToanBill.getProductQuantityMap(getProductQuantityMap());
                 thanhToanBill.setVisible(true);
 
                 // Đóng cửa sổ trang chủ (nếu cần)
@@ -3049,6 +3060,10 @@ public class GiaoDienChinh_GUI extends javax.swing.JFrame {
     private void jPanel14ComponentHidden(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jPanel14ComponentHidden
         // TODO add your handling code here:
     }//GEN-LAST:event_jPanel14ComponentHidden
+
+    private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
+        System.out.println(maNhanVien);
+    }//GEN-LAST:event_jLabel7MouseClicked
     private Map<String, Integer> productQuantityMap = new HashMap<>();
 
     private void updateTable2() {
@@ -3217,7 +3232,13 @@ public class GiaoDienChinh_GUI extends javax.swing.JFrame {
         // Thêm sản phẩm vào productInfoMap
         productInfoMap.put(tenSanPham, product);
     }
+            public Map<String, Object> getProductInfoMap() {
+        return productInfoMap;
+    }
 
+    public Map<String, Integer> getProductQuantityMap() {
+        return productQuantityMap;
+    }
     void setColor(JPanel panel) {
         panel.setBackground(new Color(198, 224, 225));
     }
