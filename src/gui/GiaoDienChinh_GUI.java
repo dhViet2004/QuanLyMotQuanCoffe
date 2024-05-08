@@ -80,7 +80,8 @@ public class GiaoDienChinh_GUI extends javax.swing.JFrame {
     private JTextField textField_SL;
     private NhanVien authenticatedEmployee;
     private Login authenticatedUser;
-    public GiaoDienChinh_GUI(HashMap<String, Object> productInfoMap) throws SQLException {
+    public GiaoDienChinh_GUI(NhanVien userMaNv) throws SQLException {
+        
         // tạo kết nối
         ConnectionDB.getInstance().connect();
         initComponents();
@@ -97,12 +98,9 @@ public class GiaoDienChinh_GUI extends javax.swing.JFrame {
         setResizable(false);
         khachHang_DAO = new KhachHang_DAO(); // Khởi tạo đối tượng KhachHang_DAO
         updateTableKhachHang();
-        
-//        NhanVien_DAO nvDAO = new NhanVien_DAO();
-//        NhanVien nv =  nvDAO.getUserByUserPassword(authenticatedUser.getUsername(), authenticatedUser.getPassword());
-//        txtMaNV.setText(nv.getMaNhanVien());
-//        txtHoTenNV.setText(nv.getHoTen());
-//        txtChucVu.setText(nv.getChucVu());    
+        txtMaNV.setText(userMaNv.getMaNhanVien());
+        txtHoTenNV.setText(userMaNv.getHoTen());
+        txtChucVu.setText(userMaNv.getChucVu());
     }
 
     private void addEventListenersChinh() {

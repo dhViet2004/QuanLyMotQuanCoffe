@@ -4,8 +4,11 @@
  */
 package gui;
 
+import gui.GiaoDienChinh_GUI;
 import dao.Login_DAO;
+import dao.NhanVien_DAO;
 import entity.Login;
+import entity.NhanVien;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -19,7 +22,7 @@ import javax.swing.JOptionPane;
  */
 public class Login_GUI extends javax.swing.JFrame {
 
-    private HashMap<String, Object> productInfoMap;
+    private NhanVien userMaNv;
 
     /**
      * Creates new form Login_GUI
@@ -195,10 +198,19 @@ public class Login_GUI extends javax.swing.JFrame {
         Login authenticatedUser = loginDAO.authenticateUser(login);
 
         if (authenticatedUser != null) {
-            openHomePage(authenticatedUser); // Thêm thông tin đăng nhập vào phương thức openHomePage
+            try {
+                NhanVien_DAO nvDAO = new NhanVien_DAO();
+                userMaNv = (nvDAO.getUserByUserPassword(authenticatedUser.getUsername(), authenticatedUser.getPassword()));
+
+                openHomePage(); // Thêm thông tin đăng nhập vào phương thức openHomePage
+            } catch (SQLException ex) {
+                Logger.getLogger(Login_GUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
         } else {
             JOptionPane.showMessageDialog(null, "Tên đăng nhập hoặc mật khẩu không đúng!");
         }
+
     }//GEN-LAST:event_jButton1MouseClicked
 
     /**
@@ -237,7 +249,6 @@ public class Login_GUI extends javax.swing.JFrame {
 //        });
 //    }
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel AnhLogo;
     private javax.swing.JPanel Right;
@@ -251,17 +262,20 @@ public class Login_GUI extends javax.swing.JFrame {
     private javax.swing.JTextField txtUser;
     // End of variables declaration//GEN-END:variables
 
-    private void openHomePage(Login authenticatedUser) {
-        dispose();
-        System.out.println("Login thành công");
+    private void openHomePage() throws SQLException {
+//        Login_GUI lg=new Login_GUI();
+//        String data = lg.getUserMaNv();
 
-        // Khởi tạo GiaoDienChinh_GUI với thông tin đăng nhập
-        GiaoDienChinh_GUI p = null;
-        try {
-            p = new GiaoDienChinh_GUI(productInfoMap); // Truyền thông tin người dùng vào constructor
-        } catch (SQLException ex) {
-            Logger.getLogger(Login_GUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
+       
+
+        // Tạo một đối tượng GiaoDienChinh_GUI và truyền userMaNv vào constructor
+        GiaoDienChinh_GUI p = new GiaoDienChinh_GUI(userMaNv);
         p.setVisible(true);
+
     }
+
+    public NhanVien getUserMaNv() {
+        return userMaNv;
+    }
+
 }
