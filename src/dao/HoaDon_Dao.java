@@ -17,7 +17,7 @@ public class HoaDon_Dao {
     private Connection con;
 
     public HoaDon_Dao() {
-        con= ConnectionDB.getInstance().getConnectionDB();
+        con = ConnectionDB.getInstance().getConnectionDB();
     }
 
     // Thêm hóa đơn vào cơ sở dữ liệu
@@ -53,6 +53,46 @@ public class HoaDon_Dao {
             }
         }
         return danhSachHoaDon;
+    }
+
+    public ArrayList<HoaDon> getAllList() throws SQLException {
+        ArrayList<HoaDon> ds = new ArrayList<>();
+
+        ConnectionDB.getInstance();
+        Connection con = ConnectionDB.getConnectionDB();
+        String sql = "select * from HoaDon";
+        try (PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                String maHoaDon = rs.getString("maHoaDon");
+                LocalDate ngayMua = rs.getDate("ngayMua").toLocalDate(); // Chuyển đổi từ Timestamp sang LocalDateTime rồi tới LocalDate
+                String maNhanVien = rs.getString("maNhanVien");
+                String maKhachHang = rs.getString("maKhachHang");
+                int tongTien = rs.getInt("tongTien");
+                HoaDon hoaDon = new HoaDon(maHoaDon, ngayMua, maNhanVien, maKhachHang, tongTien);
+                ds.add(hoaDon);
+            }
+        }
+        return ds;
+    }
+
+    public ArrayList<HoaDon> getDSHDTheoThangNam(int thang, int nam) throws SQLException {
+        ArrayList<HoaDon> ds = new ArrayList<>();
+
+        ConnectionDB.getInstance();
+        Connection con = ConnectionDB.getConnectionDB();
+        String sql = "select * from HoaDon where month(ngayMua) = " + thang + " and year(ngayMua) = " + nam;
+        try (PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                String maHoaDon = rs.getString("maHoaDon");
+                LocalDate ngayMua = rs.getDate("ngayMua").toLocalDate(); // Chuyển đổi từ Timestamp sang LocalDateTime rồi tới LocalDate
+                String maNhanVien = rs.getString("maNhanVien");
+                String maKhachHang = rs.getString("maKhachHang");
+                int tongTien = rs.getInt("tongTien");
+                HoaDon hoaDon = new HoaDon(maHoaDon, ngayMua, maNhanVien, maKhachHang, tongTien);
+                ds.add(hoaDon);
+            }
+        }
+        return ds;
     }
 
     // Xóa hóa đơn từ cơ sở dữ liệu dựa trên mã hóa đơn

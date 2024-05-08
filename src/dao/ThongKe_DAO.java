@@ -99,6 +99,32 @@ public void thongKe(LocalDate ngay) throws SQLException {
         return resultList;
     }
 
+            public ArrayList<String[]> thongKeTheoThang(int thang ) throws SQLException {
+        ConnectionDB.getInstance().connect(); // Kết nối đến cơ sở dữ liệu
+        java.sql.Connection con = ConnectionDB.getConnectionDB();
+        String sql = "select tenSanPham, sum(od.soLuong) as 'SoLuong', sum(od.gia) as 'TongGia' " +
+                     "from ChiTietHoaDon od " +
+                     "join HoaDon o on od.maHoaDon=o.maHoaDon " +
+                     "join SanPham s on od.maSanPham=s.maSanPham " +
+                     "where month(o.ngayMua) = '" + thang + "' " +
+                     "group by tenSanPham " +
+                     "order by sum(od.soLuong) desc, sum(od.gia) desc";
+        Statement statement = con.createStatement();
+        ResultSet rs = statement.executeQuery(sql);
+
+        ArrayList<String[]> resultList = new ArrayList<>();
+
+        while (rs.next()) {
+            String tenSanPham = rs.getString("tenSanPham");
+            int soLuong = rs.getInt("SoLuong");
+            double tongGia = rs.getDouble("TongGia");
+
+            String[] data = {tenSanPham, String.valueOf(soLuong), String.valueOf(tongGia)+" đ"};
+            resultList.add(data);
+        }
+
+        return resultList;
+    }
 public ArrayList<String[]> thongKe3(String nam) throws SQLException {
     ConnectionDB.getInstance().connect(); // Kết nối đến cơ sở dữ liệu
     java.sql.Connection con = ConnectionDB.getConnectionDB();

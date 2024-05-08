@@ -18,7 +18,7 @@ public class HoaDon {
     private double tongTien;
 
     // Constructor
-    public HoaDon(String maHoaDon, LocalDate ngayMua1, String maNhanVien, String maKhachHang, double tongTien) {
+    public HoaDon(String maHoaDon, LocalDate ngayMua, String maNhanVien, String maKhachHang, double tongTien) {
         this.maHoaDon = maHoaDon;
         this.ngayMua = ngayMua;
         this.maNhanVien = maNhanVien;
